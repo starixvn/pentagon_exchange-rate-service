@@ -17,8 +17,4 @@
     <PackageReference Include="Sentry" Version="2.1.1" />
     <PackageReference Include="Sentry.Extensions.Logging" Version="2.1.1" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Subscribers\" />
-  </ItemGroup>
 </Project>

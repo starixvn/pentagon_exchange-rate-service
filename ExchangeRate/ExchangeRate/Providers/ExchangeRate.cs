@@ -2,12 +2,12 @@
 
 namespace ExchangeRate.Providers
 {
-    public class ExchangeRate
+    public record ExchangeRate
     {
-        public DateTime ExchangeDate { get; set; }
+        public DateTime ExchangeDate { get; init; }
 
-        public string Code { get; set; }
+        public string Code { get; init; }
 
-        public char[] USD { get; set; }
+        public decimal USD { get; init; }
     }
 }

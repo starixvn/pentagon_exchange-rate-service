@@ -1,6 +1,9 @@
 using Coravel;
+using Coravel.Events.Interfaces;
 using ExchangeRate._Shared.Middlewares;
+using ExchangeRate.Events;
 using ExchangeRate.Providers;
+using ExchangeRate.Subscribers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -21,6 +24,12 @@ namespace ExchangeRate
                   SentrySdk.CaptureException(exception)
             );
 
+            IEventRegistration registration = host.Services.ConfigureEvents();
+
+            registration
+                .Register<ExchangeRateReceived>()
+                .Subscribe<ExchangeListener>();
+
             host.Run();
         }
 
@@ -32,8 +41,13 @@ namespace ExchangeRate
 
                     services.AddHostedService<Worker>();
                     services.AddScheduler();
+                    services.AddEvents();
+
                     services.AddTransient<ExchangeInvocable>();
+                    services.AddTransient<ExchangeListener>();
                     services.AddProviderServices(appSettings.ExchangeProviderSettings);
+                    services.AddSubcriberServices(appSettings.SubcriberSettings);
+                    services.AddMongoDBServices(appSettings.SubcriberSettings);
                 })
                 .ConfigureLogging((hostingContext, logging) =>
                 {
