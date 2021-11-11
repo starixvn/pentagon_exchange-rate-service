@@ -1,20 +1,18 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/runtime:5.0 AS base
-WORKDIR /app
+FROM registry.nexdev.net:5050/docker/dotnet/core/sdk:5.0.102-ca-patch-buster-slim AS builder
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["ExchangeRate/ExchangeRate.csproj", "ExchangeRate/"]
-RUN dotnet restore "ExchangeRate/ExchangeRate.csproj"
+RUN dotnet restore "ExchangeRate/ExchangeRate.csproj" -v diag
 COPY . .
-WORKDIR "/src/ExchangeRate"
-RUN dotnet build "ExchangeRate.csproj" -c Release -o /app/build
 
-FROM build AS publish
-RUN dotnet publish "ExchangeRate.csproj" -c Release -o /app/publish
+COPY ./ExchangeRate .
+RUN dotnet publish -r linux-x64 --self-contained false -o /app 
 
-FROM base AS final
+FROM registry.nexdev.net:5050/docker/dotnet/core/aspnet:5.0-buster-slim AS base
+
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=builder /app .
+
 ENTRYPOINT ["dotnet", "ExchangeRate.dll"]
