@@ -8,6 +8,7 @@ namespace ExchangeRate.Providers
 {
     public class ExchangeInvocable : IInvocable
     {
+        private const string Source = "OW";
         private readonly IExchangeProviderService exchangeProviderService;
         private readonly IDispatcher dispatcher;
 
@@ -23,7 +24,7 @@ namespace ExchangeRate.Providers
 
             var exchangeRates = await exchangeProviderService.GetExchangeRate();
 
-            await dispatcher.Broadcast(new ExchangeRateReceived(exchangeRates));
+            await dispatcher.Broadcast(new ExchangeRateReceived(Source, exchangeRates));
         }
     }
 }

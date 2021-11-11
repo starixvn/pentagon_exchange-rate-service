@@ -2,29 +2,41 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MongoDB.Driver;
 
 namespace ExchangeRate.Subscribers
 {
     public interface ISubcriberService
     {
-        Task InsertExchangeRates(IEnumerable<Providers.ExchangeRate> exchangeRates);
+        Task InsertExchangeRates(string source, IEnumerable<Providers.ExchangeRate> exchangeRates);
     }
 
-    public class SubcriberService : ISubcriberService
+    public abstract class SubcriberService : ISubcriberService
     {
-        private const string ExchangeCollectionName = "exchange_rates";
+        protected readonly IExchangeDataAccess exchangeDataAccess;
 
-        private readonly IMongoCollection<ExchangeRateLog> exchangeCollection;
-
-        public SubcriberService(IMongoClient mongoClient, SubcriberSettings subcriberSettings)
+        protected SubcriberService(IExchangeDataAccess exchangeDataAccess)
         {
-            var database = mongoClient.GetDatabase(subcriberSettings.SC.DatabaseName);
-
-            exchangeCollection = database.GetCollection<ExchangeRateLog>(ExchangeCollectionName);
+            this.exchangeDataAccess = exchangeDataAccess;
         }
 
-        public async Task InsertExchangeRates(IEnumerable<Providers.ExchangeRate> exchangeRates)
+        public async Task InsertExchangeRates(string source, IEnumerable<Providers.ExchangeRate> exchangeRates)
+        {
+            if (exchangeRates.Any())
+            {
+                var exchangeLog = new ExchangeRateLog
+                {
+                    Time = DateTimeOffset.UtcNow.DateTime,
+                    ExDate = exchangeRates.FirstOrDefault().ExchangeDate,
+                    Source = source,
+                    ExId = await exchangeDataAccess.GetNextId(),
+                    Code = ConvertCurrencyCodes(exchangeRates)
+                };
+
+                await exchangeDataAccess.Insert(exchangeLog);
+            }
+        }
+
+        private static Dictionary<string, decimal> ConvertCurrencyCodes(IEnumerable<Providers.ExchangeRate> exchangeRates)
         {
             var codes = new Dictionary<string, decimal>();
 
@@ -36,29 +48,7 @@ namespace ExchangeRate.Subscribers
                 }
             }
 
-            var exchangeLog = new ExchangeRateLog
-            {
-                Time = DateTimeOffset.UtcNow.DateTime,
-                ExDate = exchangeRates.FirstOrDefault().ExchangeDate,
-                Source = "OW",
-                ExId = await GetLatestExchangeId(),
-                Code = codes
-            };
-
-            await exchangeCollection.InsertOneAsync(exchangeLog);
-        }
-
-        public async Task<int> GetLatestExchangeId()
-        {
-            var options = new FindOptions<ExchangeRateLog, ExchangeRateLog>
-            {
-                Limit = 1,
-                Sort = Builders<ExchangeRateLog>.Sort.Descending(x => x.ExId)
-            };
-
-            var latestExchange = (await exchangeCollection.FindAsync(x => true, options)).FirstOrDefault();
-
-            return latestExchange == null ? 1 : latestExchange.ExId + 1;
+            return codes;
         }
     }
 }

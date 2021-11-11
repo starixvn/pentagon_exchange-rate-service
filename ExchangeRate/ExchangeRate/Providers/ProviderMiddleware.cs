@@ -7,7 +7,7 @@ namespace ExchangeRate.Providers
         public static void AddProviderServices(this IServiceCollection services, ExchangeProviderSettings providerServiceSettings)
         {
             services.AddSingleton(providerServiceSettings);
-            services.AddSingleton<DapperContext>();
+            services.AddSingleton<IDapperContext, DapperContext>();
             services.AddScoped<IExchangeProviderService, ExchangeProviderService>();
         }
     }

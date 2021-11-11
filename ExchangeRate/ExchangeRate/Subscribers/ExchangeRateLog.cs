@@ -7,6 +7,11 @@ namespace ExchangeRate.Subscribers
 {
     public record ExchangeRateLog
     {
+        public ExchangeRateLog() 
+        {
+            Time = DateTimeOffset.UtcNow.DateTime;
+        }
+
         [BsonRepresentation(BsonType.DateTime)]
         public DateTime Time { get; init; }
 

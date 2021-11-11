@@ -4,6 +4,7 @@ using ExchangeRate._Shared.Middlewares;
 using ExchangeRate.Events;
 using ExchangeRate.Providers;
 using ExchangeRate.Subscribers;
+using ExchangeRate.Subscribers.SC;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -43,11 +44,15 @@ namespace ExchangeRate
                     services.AddScheduler();
                     services.AddEvents();
 
+                    services.AddMongoDBServices(appSettings.SubcriberSettings);
+
                     services.AddTransient<ExchangeInvocable>();
                     services.AddTransient<ExchangeListener>();
+
+                    
                     services.AddProviderServices(appSettings.ExchangeProviderSettings);
                     services.AddSubcriberServices(appSettings.SubcriberSettings);
-                    services.AddMongoDBServices(appSettings.SubcriberSettings);
+                    
                 })
                 .ConfigureLogging((hostingContext, logging) =>
                 {

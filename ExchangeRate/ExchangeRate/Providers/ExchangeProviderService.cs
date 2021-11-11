@@ -13,9 +13,9 @@ namespace ExchangeRate.Providers
     public class ExchangeProviderService : IExchangeProviderService
     {
         private readonly ExchangeProviderSettings settings;
-        private readonly DapperContext context;
+        private readonly IDapperContext context;
 
-        public ExchangeProviderService(ExchangeProviderSettings settings, DapperContext context)
+        public ExchangeProviderService(ExchangeProviderSettings settings, IDapperContext context)
         {
             this.settings = settings;
             this.context = context;

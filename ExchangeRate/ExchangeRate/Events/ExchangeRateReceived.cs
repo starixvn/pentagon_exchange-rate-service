@@ -5,11 +5,14 @@ namespace ExchangeRate.Events
 {
     public class ExchangeRateReceived : IEvent
     {
-        public IEnumerable<Providers.ExchangeRate> ExchangeRate { get; set; }
-
-        public ExchangeRateReceived(IEnumerable<Providers.ExchangeRate> exchangeRate)
+        public ExchangeRateReceived(string source, IEnumerable<Providers.ExchangeRate> exchangeRate)
         {
+            Source = source;
             ExchangeRate = exchangeRate;
         }
+
+        public string Source { get; }
+
+        public IEnumerable<Providers.ExchangeRate> ExchangeRate { get; }
     }
 }

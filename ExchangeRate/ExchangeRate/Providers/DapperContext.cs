@@ -3,7 +3,12 @@ using Microsoft.Data.SqlClient;
 
 namespace ExchangeRate.Providers
 {
-    public class DapperContext
+    public interface IDapperContext
+    {
+        IDbConnection CreateConnection();
+    }
+
+    public class DapperContext : IDapperContext
     {
         private readonly string DbConn;
 

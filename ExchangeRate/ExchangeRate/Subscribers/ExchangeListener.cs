@@ -1,19 +1,26 @@
 ﻿using System.Threading.Tasks;
 using Coravel.Events.Interfaces;
 using ExchangeRate.Events;
+using ExchangeRate.Subscribers.SC;
+using ExchangeRate.Subscribers.VG;
 
 namespace ExchangeRate.Subscribers
 {
     public class ExchangeListener : IListener<ExchangeRateReceived>
     {
-        private readonly ISubcriberService subscriberService;
+        private readonly ISCSubcriberService SCService;
+        private readonly IVGSubcriberService VGService;
 
-        public ExchangeListener(ISubcriberService subscriberService)
+        public ExchangeListener(ISCSubcriberService scService, IVGSubcriberService vgService)
         {
-            this.subscriberService = subscriberService;
+            SCService = scService;
+            VGService = vgService;
         }
 
-        public Task HandleAsync(ExchangeRateReceived broadcasted)
-        => subscriberService.InsertExchangeRates(broadcasted.ExchangeRate);
+        public async Task HandleAsync(ExchangeRateReceived broadcasted)
+        {
+            await SCService.InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
+            await VGService.InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
+        }
     }
 }
