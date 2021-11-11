@@ -6,7 +6,8 @@
 
     public class VGSubcriberService : SubcriberService, IVGSubcriberService
     {
-        public VGSubcriberService(IVGExchangeDataAccess exchangeDataAccess) : base(exchangeDataAccess)
+        public VGSubcriberService(IVGExchangeDataAccess exchangeDataAccess, IVGGameConfigDataAccess gameConfigDataAccess)
+            : base(exchangeDataAccess, gameConfigDataAccess)
         {
         }
     }

@@ -13,10 +13,12 @@ namespace ExchangeRate.Subscribers
     public abstract class SubcriberService : ISubcriberService
     {
         protected readonly IExchangeDataAccess exchangeDataAccess;
+        protected readonly IGameConfigDataAccess gameConfigDataAccess;
 
-        protected SubcriberService(IExchangeDataAccess exchangeDataAccess)
+        protected SubcriberService(IExchangeDataAccess exchangeDataAccess, IGameConfigDataAccess gameConfigDataAccess)
         {
             this.exchangeDataAccess = exchangeDataAccess;
+            this.gameConfigDataAccess = gameConfigDataAccess;
         }
 
         public async Task InsertExchangeRates(string source, IEnumerable<Providers.ExchangeRate> exchangeRates)
@@ -33,6 +35,8 @@ namespace ExchangeRate.Subscribers
                 };
 
                 await exchangeDataAccess.Insert(exchangeLog);
+
+                await gameConfigDataAccess.UpdateReloadExchange();
             }
         }
 

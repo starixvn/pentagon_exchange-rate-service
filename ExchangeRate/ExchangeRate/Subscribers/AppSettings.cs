@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ExchangeRate.Subscribers;
 
-namespace ExchangeRate.Subscribers
+namespace ExchangeRate._Shared.Configurations
 {
-    class AppSettings
+    public partial interface IAppSettings
     {
+        SubcriberSettings SubcriberSettings { get; set; }
+    }
+
+    public partial class AppSettings : IAppSettings
+    {
+        public SubcriberSettings SubcriberSettings { get; set; }
     }
 }

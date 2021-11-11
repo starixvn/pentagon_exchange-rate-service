@@ -6,7 +6,8 @@
 
     public class SCSubcriberService : SubcriberService, ISCSubcriberService
     {
-        public SCSubcriberService(ISCExchangeDataAccess exchangeDataAccess) : base(exchangeDataAccess)
+        public SCSubcriberService(ISCExchangeDataAccess exchangeDataAccess, ISCGameConfigDataAccess gameConfigDataAccess)
+            : base(exchangeDataAccess, gameConfigDataAccess)
         {
         }
     }

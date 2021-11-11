@@ -15,9 +15,11 @@ namespace ExchangeRate.Subscribers
             services.AddSingleton(settings);
 
             services.AddScoped<ISCExchangeDataAccess, SCExchangeDataAccess>();
+            services.AddScoped<ISCGameConfigDataAccess, SCGameConfigDataAccess>();
             services.AddScoped<ISCSubcriberService, SCSubcriberService>();
 
             services.AddScoped<IVGExchangeDataAccess, VGExchangeDataAccess>();
+            services.AddScoped<IVGGameConfigDataAccess, VGGameConfigDataAccess>();
             services.AddScoped<IVGSubcriberService, VGSubcriberService>();
         }
 
