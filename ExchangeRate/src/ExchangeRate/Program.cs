@@ -4,11 +4,11 @@ using ExchangeRate._Shared.Middlewares;
 using ExchangeRate.Events;
 using ExchangeRate.Providers;
 using ExchangeRate.Subscribers;
-using ExchangeRate.Subscribers.SC;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Sentry;
+using TinyHealthCheck;
 
 namespace ExchangeRate
 {
@@ -41,6 +41,14 @@ namespace ExchangeRate
                     var appSettings = services.AddSettings(hostContext.Configuration);
 
                     services.AddHostedService<Worker>();
+                    services.AddBasicTinyHealthCheck(config =>
+                    {
+                        config.Port = 5000;
+                        config.UrlPath = "/";
+
+                        return config;
+                    });
+
                     services.AddScheduler();
                     services.AddEvents();
 
@@ -49,10 +57,8 @@ namespace ExchangeRate
                     services.AddTransient<ExchangeInvocable>();
                     services.AddTransient<ExchangeListener>();
 
-                    
                     services.AddProviderServices(appSettings.ExchangeProviderSettings);
                     services.AddSubcriberServices(appSettings.SubcriberSettings);
-                    
                 })
                 .ConfigureLogging((hostingContext, logging) =>
                 {

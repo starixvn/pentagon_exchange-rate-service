@@ -16,5 +16,6 @@
     <PackageReference Include="MongoDB.Driver" Version="2.13.2" />
     <PackageReference Include="Sentry" Version="2.1.1" />
     <PackageReference Include="Sentry.Extensions.Logging" Version="2.1.1" />
+    <PackageReference Include="TinyHealthCheck" Version="0.0.9" />
   </ItemGroup>
 </Project>
