@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExchangeRate", "ExchangeRate\ExchangeRate.csproj", "{35530214-3D67-4E8E-A417-207632834E8F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B6CFA996-BAF7-4069-8794-85E078C918A4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3DE65374-2ADC-4F75-90EB-03A08969255D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExchangeRate", "src\ExchangeRate\ExchangeRate.csproj", "{3362C4CB-F6A5-445D-8629-99A6509D0F83}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,16 +13,16 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{35530214-3D67-4E8E-A417-207632834E8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35530214-3D67-4E8E-A417-207632834E8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35530214-3D67-4E8E-A417-207632834E8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35530214-3D67-4E8E-A417-207632834E8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3362C4CB-F6A5-445D-8629-99A6509D0F83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3362C4CB-F6A5-445D-8629-99A6509D0F83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3362C4CB-F6A5-445D-8629-99A6509D0F83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3362C4CB-F6A5-445D-8629-99A6509D0F83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{35530214-3D67-4E8E-A417-207632834E8F} = {3DE65374-2ADC-4F75-90EB-03A08969255D}
+		{3362C4CB-F6A5-445D-8629-99A6509D0F83} = {B6CFA996-BAF7-4069-8794-85E078C918A4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D7A6404A-24B5-498C-B165-3414F133B979}
