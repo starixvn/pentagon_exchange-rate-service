@@ -7,7 +7,7 @@ namespace ExchangeRate.Subscribers
 {
     public interface ISubcriberService
     {
-        Task InsertExchangeRates(string source, IEnumerable<Providers.ExchangeRate> exchangeRates);
+        Task InsertExchangeRates(string source, IEnumerable<Providers.ExchangeRateRecord> exchangeRates);
     }
 
     public abstract class SubcriberService : ISubcriberService
@@ -21,7 +21,7 @@ namespace ExchangeRate.Subscribers
             this.gameConfigDataAccess = gameConfigDataAccess;
         }
 
-        public async Task InsertExchangeRates(string source, IEnumerable<Providers.ExchangeRate> exchangeRates)
+        public async Task InsertExchangeRates(string source, IEnumerable<Providers.ExchangeRateRecord> exchangeRates)
         {
             if (exchangeRates.Any())
             {
@@ -35,12 +35,11 @@ namespace ExchangeRate.Subscribers
                 };
 
                 await exchangeDataAccess.Insert(exchangeLog);
-
                 await gameConfigDataAccess.UpdateReloadExchange();
             }
         }
 
-        private static Dictionary<string, decimal> ConvertCurrencyCodes(IEnumerable<Providers.ExchangeRate> exchangeRates)
+        private static Dictionary<string, decimal> ConvertCurrencyCodes(IEnumerable<Providers.ExchangeRateRecord> exchangeRates)
         {
             var codes = new Dictionary<string, decimal>();
 

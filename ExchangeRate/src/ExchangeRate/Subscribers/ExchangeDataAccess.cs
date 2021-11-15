@@ -20,7 +20,7 @@ namespace ExchangeRate.Subscribers
         {
         }
 
-        public async Task InsertExchangeRates(IEnumerable<Providers.ExchangeRate> exchangeRates)
+        public async Task InsertExchangeRates(IEnumerable<Providers.ExchangeRateRecord> exchangeRates)
         {
             var codes = new Dictionary<string, decimal>();
 

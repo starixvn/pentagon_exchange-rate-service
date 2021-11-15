@@ -39,8 +39,6 @@ namespace ExchangeRate
                 .ConfigureServices((hostContext, services) =>
                 {
                     var appSettings = services.AddSettings(hostContext.Configuration);
-
-                    services.AddHostedService<Worker>();
                     services.AddBasicTinyHealthCheck(config =>
                     {
                         config.Port = 5000;

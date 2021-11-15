@@ -3,16 +3,16 @@ using Coravel.Events.Interfaces;
 
 namespace ExchangeRate.Events
 {
-    public class ExchangeRateReceived : IEvent
+    public record ExchangeRateReceived : IEvent
     {
-        public ExchangeRateReceived(string source, IEnumerable<Providers.ExchangeRate> exchangeRate)
+        public ExchangeRateReceived(string source, IEnumerable<Providers.ExchangeRateRecord> exchangeRate)
         {
             Source = source;
             ExchangeRate = exchangeRate;
         }
 
-        public string Source { get; }
+        public string Source { get; init; }
 
-        public IEnumerable<Providers.ExchangeRate> ExchangeRate { get; }
+        public IEnumerable<Providers.ExchangeRateRecord> ExchangeRate { get; init; }
     }
 }

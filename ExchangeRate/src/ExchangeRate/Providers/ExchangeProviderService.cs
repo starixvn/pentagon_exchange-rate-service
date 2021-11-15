@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
-using Dapper;
 
 namespace ExchangeRate.Providers
 {
     public interface IExchangeProviderService
     {
-        Task<IEnumerable<ExchangeRate>> GetExchangeRate();
+        Task<IEnumerable<ExchangeRateRecord>> GetExchangeRate();
     }
 
     public class ExchangeProviderService : IExchangeProviderService
@@ -21,12 +20,8 @@ namespace ExchangeRate.Providers
             this.context = context;
         }
 
-        public Task<IEnumerable<ExchangeRate>> GetExchangeRate()
-        {
-            var connection = context.CreateConnection();
-
-            return connection.QueryAsync<ExchangeRate>
+        public Task<IEnumerable<ExchangeRateRecord>> GetExchangeRate()
+        => context.QueryAsync<ExchangeRateRecord>
                 (settings.ExchangeStoredProcedure, null, commandType: CommandType.StoredProcedure);
-        }
     }
 }

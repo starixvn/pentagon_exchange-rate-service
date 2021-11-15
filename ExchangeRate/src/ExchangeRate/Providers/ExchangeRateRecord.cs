@@ -2,7 +2,7 @@
 
 namespace ExchangeRate.Providers
 {
-    public record ExchangeRate
+    public record ExchangeRateRecord
     {
         public DateTime ExchangeDate { get; init; }
 
