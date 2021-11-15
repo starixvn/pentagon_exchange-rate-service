@@ -5,7 +5,11 @@ VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B6CFA996-BAF7-4069-8794-85E078C918A4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExchangeRate", "src\ExchangeRate\ExchangeRate.csproj", "{3362C4CB-F6A5-445D-8629-99A6509D0F83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExchangeRate.Service", "src\ExchangeRate\ExchangeRate.Service.csproj", "{3362C4CB-F6A5-445D-8629-99A6509D0F83}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{092CFCD4-F726-4053-85FD-2A26C5219119}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExchangeRate.Service.Tests", "ExchangeRate.Service.Tests\ExchangeRate.Service.Tests.csproj", "{1D5E979D-6DC4-4087-AECB-BBF528E65257}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,12 +21,17 @@ Global
 		{3362C4CB-F6A5-445D-8629-99A6509D0F83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3362C4CB-F6A5-445D-8629-99A6509D0F83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3362C4CB-F6A5-445D-8629-99A6509D0F83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D5E979D-6DC4-4087-AECB-BBF528E65257}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D5E979D-6DC4-4087-AECB-BBF528E65257}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D5E979D-6DC4-4087-AECB-BBF528E65257}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D5E979D-6DC4-4087-AECB-BBF528E65257}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3362C4CB-F6A5-445D-8629-99A6509D0F83} = {B6CFA996-BAF7-4069-8794-85E078C918A4}
+		{1D5E979D-6DC4-4087-AECB-BBF528E65257} = {092CFCD4-F726-4053-85FD-2A26C5219119}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D7A6404A-24B5-498C-B165-3414F133B979}
