@@ -12,7 +12,7 @@ namespace ExchangeRate.Subscribers
         Task<int> GetNextId();
     }
 
-    public abstract class ExchangeDataAccess : IExchangeDataAccess
+    public class ExchangeDataAccess : IExchangeDataAccess
     {
         protected IMongoCollection<ExchangeRateLog> exchangeCollection;
 

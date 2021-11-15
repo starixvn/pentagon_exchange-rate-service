@@ -8,7 +8,7 @@
     {
         private const string GameConfigCollectionName = "game_configs";
 
-        public VGGameConfigDataAccess(IVGMongoClient mongoClient) : base()
+        public VGGameConfigDataAccess(IVGMongoClient mongoClient)
         {
             var database = mongoClient.GetDatabase();
 

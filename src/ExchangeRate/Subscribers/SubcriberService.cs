@@ -10,7 +10,7 @@ namespace ExchangeRate.Subscribers
         Task InsertExchangeRates(string source, IEnumerable<Providers.ExchangeRateRecord> exchangeRates);
     }
 
-    public abstract class SubcriberService : ISubcriberService
+    public class SubcriberService : ISubcriberService
     {
         protected readonly IExchangeDataAccess exchangeDataAccess;
         protected readonly IGameConfigDataAccess gameConfigDataAccess;

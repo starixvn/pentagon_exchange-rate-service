@@ -8,7 +8,7 @@
     {
         private const string ExchangeCollectionName = "exchange_rates";
 
-        public VGExchangeDataAccess(IVGMongoClient mongoClient) : base()
+        public VGExchangeDataAccess(IVGMongoClient mongoClient)
         {
             var database = mongoClient.GetDatabase();
 

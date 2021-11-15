@@ -8,7 +8,7 @@ namespace ExchangeRate.Subscribers
         Task UpdateReloadExchange();
     }
 
-    public abstract class GameConfigDataAccess : IGameConfigDataAccess
+    public class GameConfigDataAccess : IGameConfigDataAccess
     {
         protected IMongoCollection<GameConfig> gameConfigCollection;
 

@@ -22,6 +22,6 @@ namespace ExchangeRate.Providers
 
         public Task<IEnumerable<ExchangeRateRecord>> GetExchangeRate()
         => context.QueryAsync<ExchangeRateRecord>
-                (settings.ExchangeStoredProcedure, null, commandType: CommandType.StoredProcedure);
+                (settings.ExchangeStoredProcedure, commandType: CommandType.StoredProcedure);
     }
 }

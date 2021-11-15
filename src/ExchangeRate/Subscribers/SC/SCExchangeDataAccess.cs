@@ -8,7 +8,7 @@
     {
         private const string ExchangeCollectionName = "exchange_rates";
 
-        public SCExchangeDataAccess(ISCMongoClient mongoClient) : base()
+        public SCExchangeDataAccess(ISCMongoClient mongoClient)
         {
             var database = mongoClient.GetDatabase();
 

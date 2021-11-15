@@ -8,7 +8,7 @@
     {
         private const string GameConfigCollectionName = "game_configs";
 
-        public SCGameConfigDataAccess(ISCMongoClient mongoClient) : base()
+        public SCGameConfigDataAccess(ISCMongoClient mongoClient)
         {
             var database = mongoClient.GetDatabase();
 
