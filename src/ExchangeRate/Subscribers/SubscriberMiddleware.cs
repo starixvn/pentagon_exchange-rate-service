@@ -8,22 +8,22 @@ using MongoDB.Bson.Serialization.Serializers;
 
 namespace ExchangeRate.Subscribers
 {
-    public static class SubcriberMiddleware
+    public static class SubscriberMiddleware
     {
-        public static void AddSubcriberServices(this IServiceCollection services, SubcriberSettings settings)
+        public static void AddSubcriberServices(this IServiceCollection services, SubscriberSettings settings)
         {
             services.AddSingleton(settings);
 
             services.AddScoped<ISCExchangeDataAccess, SCExchangeDataAccess>();
             services.AddScoped<ISCGameConfigDataAccess, SCGameConfigDataAccess>();
-            services.AddScoped<ISCSubcriberService, SCSubcriberService>();
+            services.AddScoped<ISCSubscriberService, SCSubscriberService>();
 
             services.AddScoped<IVGExchangeDataAccess, VGExchangeDataAccess>();
             services.AddScoped<IVGGameConfigDataAccess, VGGameConfigDataAccess>();
-            services.AddScoped<IVGSubcriberService, VGSubcriberService>();
+            services.AddScoped<IVGSubscriberService, VGSubcriberService>();
         }
 
-        public static void AddMongoDBServices(this IServiceCollection services, SubcriberSettings settings)
+        public static void AddMongoDBServices(this IServiceCollection services, SubscriberSettings settings)
         {
             var camelIgnoringExtraElementConventions = new ConventionPack
             {

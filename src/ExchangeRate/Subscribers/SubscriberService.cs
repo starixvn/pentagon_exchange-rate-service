@@ -5,17 +5,17 @@ using System.Threading.Tasks;
 
 namespace ExchangeRate.Subscribers
 {
-    public interface ISubcriberService
+    public interface ISubscriberService
     {
         Task InsertExchangeRates(string source, IEnumerable<Providers.ExchangeRateRecord> exchangeRates);
     }
 
-    public class SubcriberService : ISubcriberService
+    public class SubscriberService : ISubscriberService
     {
         protected readonly IExchangeDataAccess exchangeDataAccess;
         protected readonly IGameConfigDataAccess gameConfigDataAccess;
 
-        protected SubcriberService(IExchangeDataAccess exchangeDataAccess, IGameConfigDataAccess gameConfigDataAccess)
+        protected SubscriberService(IExchangeDataAccess exchangeDataAccess, IGameConfigDataAccess gameConfigDataAccess)
         {
             this.exchangeDataAccess = exchangeDataAccess;
             this.gameConfigDataAccess = gameConfigDataAccess;
@@ -30,13 +30,20 @@ namespace ExchangeRate.Subscribers
                     Time = DateTimeOffset.UtcNow.DateTime,
                     ExDate = exchangeRates.FirstOrDefault().ExchangeDate,
                     Source = source,
-                    ExId = await exchangeDataAccess.GetNextId(),
+                    ExId = await GetNextId(),
                     Code = ConvertCurrencyCodes(exchangeRates)
                 };
 
                 await exchangeDataAccess.Insert(exchangeLog);
                 await gameConfigDataAccess.UpdateReloadExchange();
             }
+        }
+
+        private async Task<int> GetNextId() 
+        {
+            var lastId = await exchangeDataAccess.GetLastExchangeId();
+
+            return lastId == null ? 1 : (int)lastId + 1;
         }
 
         private static Dictionary<string, decimal> ConvertCurrencyCodes(IEnumerable<Providers.ExchangeRateRecord> exchangeRates)

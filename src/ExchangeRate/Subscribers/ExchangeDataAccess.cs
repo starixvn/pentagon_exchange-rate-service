@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 
@@ -9,7 +8,7 @@ namespace ExchangeRate.Subscribers
     {
         Task Insert(ExchangeRateLog exchangeRateLog);
 
-        Task<int> GetNextId();
+        Task<int?> GetLastExchangeId();
     }
 
     public class ExchangeDataAccess : IExchangeDataAccess
@@ -20,33 +19,10 @@ namespace ExchangeRate.Subscribers
         {
         }
 
-        public async Task InsertExchangeRates(IEnumerable<Providers.ExchangeRateRecord> exchangeRates)
-        {
-            var codes = new Dictionary<string, decimal>();
-
-            foreach (var rate in exchangeRates)
-            {
-                if (!string.IsNullOrWhiteSpace(rate.Code))
-                {
-                    codes.Add(rate.Code, rate.USD);
-                }
-            }
-
-            var exchangeLog = new ExchangeRateLog
-            {
-                ExDate = exchangeRates.FirstOrDefault().ExchangeDate,
-                Source = "OW",
-                ExId = await GetNextId(),
-                Code = codes
-            };
-
-            await exchangeCollection.InsertOneAsync(exchangeLog);
-        }
-
         public Task Insert(ExchangeRateLog exchangeRateLog)
         => exchangeCollection.InsertOneAsync(exchangeRateLog);
 
-        public async Task<int> GetNextId()
+        public async Task<int?> GetLastExchangeId()
         {
             var options = new FindOptions<ExchangeRateLog, ExchangeRateLog>
             {
@@ -54,9 +30,7 @@ namespace ExchangeRate.Subscribers
                 Sort = Builders<ExchangeRateLog>.Sort.Descending(x => x.ExId)
             };
 
-            var latestExchange = (await exchangeCollection.FindAsync(x => true, options)).FirstOrDefault();
-
-            return latestExchange == null ? 1 : latestExchange.ExId + 1;
+            return (await exchangeCollection.FindAsync(x => true, options)).FirstOrDefault()?.ExId;
         }
     }
 }

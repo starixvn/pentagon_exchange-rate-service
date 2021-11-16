@@ -11,15 +11,15 @@ namespace ExchangeRate.Service.Tests.Subscribers
 {
     public class ExchangeListenerTests
     {
-        private readonly ISCSubcriberService SCService;
-        private readonly IVGSubcriberService VGService;
+        private readonly ISCSubscriberService SCService;
+        private readonly IVGSubscriberService VGService;
 
         private readonly ExchangeListener listener;
 
         public ExchangeListenerTests()
         {
-            SCService = Substitute.For<ISCSubcriberService>();
-            VGService = Substitute.For<IVGSubcriberService>();
+            SCService = Substitute.For<ISCSubscriberService>();
+            VGService = Substitute.For<IVGSubscriberService>();
 
             listener = new ExchangeListener(SCService, VGService);
         }

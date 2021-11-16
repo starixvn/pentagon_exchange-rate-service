@@ -4,11 +4,11 @@ namespace ExchangeRate._Shared.Configurations
 {
     public partial interface IAppSettings
     {
-        SubcriberSettings SubcriberSettings { get; set; }
+        SubscriberSettings SubcriberSettings { get; set; }
     }
 
     public partial class AppSettings : IAppSettings
     {
-        public SubcriberSettings SubcriberSettings { get; set; }
+        public SubscriberSettings SubcriberSettings { get; set; }
     }
 }

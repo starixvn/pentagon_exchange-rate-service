@@ -14,14 +14,14 @@ namespace ExchangeRate.Service.Tests.Subscribers.SC
         private readonly ISCExchangeDataAccess exchangeDataAccess;
         private readonly ISCGameConfigDataAccess gameConfigDataAccess;
 
-        private readonly SCSubcriberService subscriberService;
+        private readonly SCSubscriberService subscriberService;
 
         public SCSubscriberServiceTests()
         {
             exchangeDataAccess = Substitute.For<ISCExchangeDataAccess>();
             gameConfigDataAccess = Substitute.For<ISCGameConfigDataAccess>();
 
-            subscriberService = new SCSubcriberService(exchangeDataAccess, gameConfigDataAccess);
+            subscriberService = new SCSubscriberService(exchangeDataAccess, gameConfigDataAccess);
         }
 
         [Theory, AutoData]

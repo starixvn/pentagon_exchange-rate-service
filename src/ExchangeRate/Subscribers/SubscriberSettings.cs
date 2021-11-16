@@ -1,6 +1,6 @@
 ﻿namespace ExchangeRate.Subscribers
 {
-    public class SubcriberSettings
+    public class SubscriberSettings
     {
         public SubcriberDatabase SC { get; set; }
 

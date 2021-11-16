@@ -1,10 +1,10 @@
 ﻿namespace ExchangeRate.Subscribers.VG
 {
-    public interface IVGSubcriberService : ISubcriberService
+    public interface IVGSubscriberService : ISubscriberService
     {
     }
 
-    public class VGSubcriberService : SubcriberService, IVGSubcriberService
+    public class VGSubcriberService : SubscriberService, IVGSubscriberService
     {
         public VGSubcriberService(IVGExchangeDataAccess exchangeDataAccess, IVGGameConfigDataAccess gameConfigDataAccess)
             : base(exchangeDataAccess, gameConfigDataAccess)

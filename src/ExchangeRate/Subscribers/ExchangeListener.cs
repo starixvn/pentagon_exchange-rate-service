@@ -8,10 +8,10 @@ namespace ExchangeRate.Subscribers
 {
     public class ExchangeListener : IListener<ExchangeRateReceived>
     {
-        private readonly ISCSubcriberService SCService;
-        private readonly IVGSubcriberService VGService;
+        private readonly ISCSubscriberService SCService;
+        private readonly IVGSubscriberService VGService;
 
-        public ExchangeListener(ISCSubcriberService scService, IVGSubcriberService vgService)
+        public ExchangeListener(ISCSubscriberService scService, IVGSubscriberService vgService)
         {
             SCService = scService;
             VGService = vgService;

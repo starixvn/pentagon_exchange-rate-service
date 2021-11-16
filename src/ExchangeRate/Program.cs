@@ -4,7 +4,6 @@ using ExchangeRate._Shared.Middlewares;
 using ExchangeRate.Events;
 using ExchangeRate.Providers;
 using ExchangeRate.Subscribers;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Sentry;
@@ -12,7 +11,7 @@ using TinyHealthCheck;
 
 namespace ExchangeRate
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -41,19 +40,16 @@ namespace ExchangeRate
                     var appSettings = services.AddSettings(hostContext.Configuration);
                     services.AddBasicTinyHealthCheck(config =>
                     {
-                        config.Port = 5000;
+                        config.Port = appSettings.Port;
                         config.UrlPath = "/";
 
                         return config;
                     });
 
-                    services.AddScheduler();
-                    services.AddEvents();
+                    services.AddSchedulers();
+                    services.AddEventListeners();
 
                     services.AddMongoDBServices(appSettings.SubcriberSettings);
-
-                    services.AddTransient<ExchangeInvocable>();
-                    services.AddTransient<ExchangeListener>();
 
                     services.AddProviderServices(appSettings.ExchangeProviderSettings);
                     services.AddSubcriberServices(appSettings.SubcriberSettings);
