@@ -14,7 +14,7 @@ namespace ExchangeRate.Service.Tests.Providers
             var services = new ServiceCollection();
 
             // Act
-            ProviderMiddleware.AddProviderServices(services, providerSettings);
+            services.AddProviderServices(providerSettings);
             var provider = services.BuildServiceProvider();
             var result = provider.GetRequiredService<ExchangeProviderSettings>();
 
@@ -29,7 +29,7 @@ namespace ExchangeRate.Service.Tests.Providers
             var services = new ServiceCollection();
 
             // Act
-            ProviderMiddleware.AddProviderServices(services, providerSettings);
+            services.AddProviderServices(providerSettings);
             var provider = services.BuildServiceProvider();
             var result = provider.GetRequiredService<IExchangeProviderService>();
 

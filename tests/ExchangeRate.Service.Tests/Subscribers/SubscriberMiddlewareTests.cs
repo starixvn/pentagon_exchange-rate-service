@@ -16,7 +16,7 @@ namespace ExchangeRate.Service.Tests.Subscribers
             var services = new ServiceCollection();
 
             // Act
-            SubscriberMiddleware.AddSubcriberServices(services, settings);
+            services.AddSubcriberServices(settings);
             var provider = services.BuildServiceProvider();
             var result = provider.GetRequiredService<SubscriberSettings>();
 
@@ -35,10 +35,10 @@ namespace ExchangeRate.Service.Tests.Subscribers
             };
 
             var services = new ServiceCollection();
-            SubscriberMiddleware.AddMongoDBServices(services, settings);
+            services.AddMongoDBServices(settings);
 
             // Act
-            SubscriberMiddleware.AddSubcriberServices(services, settings);
+            services.AddSubcriberServices(settings);
             var provider = services.BuildServiceProvider();
             var scService = provider.GetRequiredService<ISCSubscriberService>();
             var vgService = provider.GetRequiredService<IVGSubscriberService>();
