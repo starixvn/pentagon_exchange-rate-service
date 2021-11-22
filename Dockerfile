@@ -1,7 +1,7 @@
 FROM registry.nexdev.net:5050/docker/dotnet/core/sdk:5.0.102-ca-patch-buster-slim AS builder
 
 WORKDIR /src
-COPY /src/ExchangeRate/ExchangeRate.csproj ExchangeRate/ExchangeRate.csproj
+COPY /src/ExchangeRate/ExchangeRate.Service.csproj ExchangeRate/ExchangeRate.Service.csproj
 
 WORKDIR /src/ExchangeRate
 RUN dotnet restore -v diag
