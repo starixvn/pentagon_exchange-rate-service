@@ -14,4 +14,4 @@ FROM registry.nexdev.net:5050/docker/dotnet/core/aspnet:5.0-buster-slim AS base
 WORKDIR /app
 COPY --from=builder /app .
 
-ENTRYPOINT ["dotnet", "ExchangeRate.dll"]
+ENTRYPOINT ["dotnet", "ExchangeRate.Service.dll"]
