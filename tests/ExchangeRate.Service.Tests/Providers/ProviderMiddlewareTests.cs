@@ -21,20 +21,5 @@ namespace ExchangeRate.Service.Tests.Providers
             // Assert
             Assert.Equal(providerSettings, result);
         }
-
-        [Theory, AutoData]
-        public void AddProviderServices_Always_AddExchangeProviderService(ExchangeProviderSettings providerSettings)
-        {
-            // Arrange
-            var services = new ServiceCollection();
-
-            // Act
-            services.AddProviderServices(providerSettings);
-            var provider = services.BuildServiceProvider();
-            var result = provider.GetRequiredService<IExchangeProviderService>();
-
-            // Assert
-            Assert.NotNull(result);
-        }
     }
 }
