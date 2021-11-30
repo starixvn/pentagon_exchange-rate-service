@@ -19,7 +19,7 @@ namespace ExchangeRate
 
             host.Services.UseScheduler(scheduler =>
             {
-                scheduler.Schedule<ExchangeInvocable>().EveryFiveMinutes();
+                scheduler.Schedule<ExchangeInvocable>().EveryThirtyMinutes();
             }).OnError((exception) =>
                   SentrySdk.CaptureException(exception)
             );
