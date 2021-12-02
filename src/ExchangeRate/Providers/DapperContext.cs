@@ -6,6 +6,7 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Polly;
 using Sentry;
+using Sentry.Protocol;
 
 namespace ExchangeRate.Providers
 {
@@ -18,6 +19,7 @@ namespace ExchangeRate.Providers
 
     public class DapperContext : IDapperContext
     {
+        private const int MaxRetryAttempts = 3;
         private readonly string DbConn;
         private readonly ISentryClient sentryClient;
 
@@ -35,11 +37,11 @@ namespace ExchangeRate.Providers
             var policy = Policy
               .Handle<SqlException>()
               .WaitAndRetryAsync(
-                3,
+                MaxRetryAttempts,
                 retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
                 (exception, timeSpan, context) =>
                 {
-                    sentryClient.CaptureMessage($"Failed to get exchange rates. Exception {exception.Message}. Next retry is {timeSpan}.");
+                    sentryClient.CaptureMessage($"Failed to get exchange rates. Exception {exception.Message}. Next retry is {timeSpan}.", SentryLevel.Error);
                 }
               );
 
