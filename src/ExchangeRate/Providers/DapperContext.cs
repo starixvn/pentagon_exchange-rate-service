@@ -50,8 +50,7 @@ namespace ExchangeRate.Providers
         {
             using var connection = CreateConnection();
 
-            return await connection.QueryAsync<T>
-                (procedure, param, commandType: commandType);
+            return await connection.QueryAsync<T>(procedure, param, commandType: commandType);
         }
     }
 }
