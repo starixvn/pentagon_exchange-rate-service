@@ -8,7 +8,7 @@ namespace ExchangeRate.Subscribers
     {
         Task Insert(ExchangeRateLog exchangeRateLog);
 
-        Task<int?> GetLastExchangeId();
+        Task<ExchangeRateLog> GetLastExchange();
     }
 
     public class ExchangeDataAccess : IExchangeDataAccess
@@ -22,7 +22,7 @@ namespace ExchangeRate.Subscribers
         public Task Insert(ExchangeRateLog exchangeRateLog)
         => exchangeCollection.InsertOneAsync(exchangeRateLog);
 
-        public async Task<int?> GetLastExchangeId()
+        public async Task<ExchangeRateLog> GetLastExchange()
         {
             var options = new FindOptions<ExchangeRateLog, ExchangeRateLog>
             {
@@ -30,7 +30,7 @@ namespace ExchangeRate.Subscribers
                 Sort = Builders<ExchangeRateLog>.Sort.Descending(x => x.ExId)
             };
 
-            return (await exchangeCollection.FindAsync(x => true, options)).FirstOrDefault()?.ExId;
+            return (await exchangeCollection.FindAsync(x => true, options)).FirstOrDefault();
         }
     }
 }

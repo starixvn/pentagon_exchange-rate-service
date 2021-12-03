@@ -41,9 +41,9 @@ namespace ExchangeRate.Subscribers
 
         private async Task<int> GetNextId() 
         {
-            var lastId = await exchangeDataAccess.GetLastExchangeId();
+            var latestExchange = await exchangeDataAccess.GetLastExchange();
 
-            return lastId == null ? 1 : (int)lastId + 1;
+            return latestExchange == null ? 1 : latestExchange.ExId + 1;
         }
 
         private static Dictionary<string, decimal> ConvertCurrencyCodes(IEnumerable<Providers.ExchangeRateRecord> exchangeRates)
