@@ -6,8 +6,10 @@
 
     public class VGSubcriberService : SubscriberService, IVGSubscriberService
     {
+        private const string BaseCode = "VND";
+
         public VGSubcriberService(IVGExchangeDataAccess exchangeDataAccess, IVGGameConfigDataAccess gameConfigDataAccess)
-            : base(exchangeDataAccess, gameConfigDataAccess)
+            : base(BaseCode, exchangeDataAccess, gameConfigDataAccess)
         {
         }
     }

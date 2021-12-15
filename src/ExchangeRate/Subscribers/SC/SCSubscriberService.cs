@@ -6,8 +6,10 @@
 
     public class SCSubscriberService : SubscriberService, ISCSubscriberService
     {
+        private const string BaseCode = "USD";
+
         public SCSubscriberService(ISCExchangeDataAccess exchangeDataAccess, ISCGameConfigDataAccess gameConfigDataAccess)
-            : base(exchangeDataAccess, gameConfigDataAccess)
+            : base(BaseCode, exchangeDataAccess, gameConfigDataAccess)
         {
         }
     }

@@ -8,6 +8,8 @@ namespace ExchangeRate.Providers
 
         public string Code { get; init; }
 
-        public decimal USD { get; init; }
+        public string BaseCode { get; init; }
+
+        public decimal BaseRate { get; init; }
     }
 }
