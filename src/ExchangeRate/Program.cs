@@ -1,5 +1,6 @@
 using Coravel;
 using Coravel.Events.Interfaces;
+using ExchangeRate._Shared.Configurations;
 using ExchangeRate._Shared.Middlewares;
 using ExchangeRate.Events;
 using ExchangeRate.Providers;
@@ -13,13 +14,15 @@ namespace ExchangeRate
 {
     public static class Program
     {
+        private static string CronSettings = "";
+
         public static void Main(string[] args)
         {
             IHost host = CreateHostBuilder(args).Build();
-
+            
             host.Services.UseScheduler(scheduler =>
             {
-                scheduler.Schedule<ExchangeInvocable>().Cron("00 07,19 * * *");
+                scheduler.Schedule<ExchangeInvocable>().Cron(CronSettings);
             }).OnError((exception) =>
                   SentrySdk.CaptureException(exception)
             );
@@ -38,6 +41,7 @@ namespace ExchangeRate
                 .ConfigureServices((hostContext, services) =>
                 {
                     var appSettings = services.AddSettings(hostContext.Configuration);
+                    CronSettings = appSettings.Cron;
                     services.AddBasicTinyHealthCheck(config =>
                     {
                         config.Port = appSettings.Port;
