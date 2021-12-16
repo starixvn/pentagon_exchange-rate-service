@@ -12,6 +12,6 @@ namespace ExchangeRate.Subscribers
 
         public string Name { get; set; }
 
-        public bool ReloadExchange { get; set; }
+        public bool ExchangeReload { get; set; }
     }
 }
