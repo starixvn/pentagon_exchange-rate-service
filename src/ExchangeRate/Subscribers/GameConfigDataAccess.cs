@@ -19,7 +19,7 @@ namespace ExchangeRate.Subscribers
         public Task UpdateReloadExchange()
         {
             var update = Builders<GameConfig>.Update
-                    .Set(field => field.ExchangeReload, true);
+                    .Set(field => field.ReloadExchange, true);
 
             return gameConfigCollection.UpdateManyAsync(config => true, update);
         }
