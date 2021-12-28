@@ -41,20 +41,5 @@ namespace ExchangeRate.Service.Tests.Subscribers
             await SCService.Received().InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
             await VGService.Received().InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
         }
-
-        [Theory, AutoData]
-        public async Task HandleAsync_DisabledSubcriber_ShouldNotInsertExchangeRates(ExchangeRateReceived broadcasted, SubscriberSettings subscriberSettings)
-        {
-            // Arrange
-            appSettings.SubcriberSettings = subscriberSettings;
-            appSettings.SubcriberSettings.VG.Enabled = false;
-
-            // Act
-            await listener.HandleAsync(broadcasted);
-
-            // Assert
-            await SCService.Received().InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
-            await VGService.DidNotReceive().InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
-        }
     }
 }

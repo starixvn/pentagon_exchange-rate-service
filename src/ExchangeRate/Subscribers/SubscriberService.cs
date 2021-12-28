@@ -12,13 +12,15 @@ namespace ExchangeRate.Subscribers
 
     public class SubscriberService : ISubscriberService
     {
+        protected readonly string baseCode;
         protected readonly IExchangeDataAccess exchangeDataAccess;
-        protected readonly IGameConfigDataAccess gameConfigDataAccess;
+        protected readonly IGameConfigDataAccess gameConfigDataAccess;        
 
-        protected SubscriberService(IExchangeDataAccess exchangeDataAccess, IGameConfigDataAccess gameConfigDataAccess)
+        protected SubscriberService(string baseCode,IExchangeDataAccess exchangeDataAccess, IGameConfigDataAccess gameConfigDataAccess)
         {
             this.exchangeDataAccess = exchangeDataAccess;
             this.gameConfigDataAccess = gameConfigDataAccess;
+            this.baseCode = baseCode;
         }
 
         public async Task InsertExchangeRates(string source, IEnumerable<Providers.ExchangeRateRecord> exchangeRates)
@@ -31,7 +33,7 @@ namespace ExchangeRate.Subscribers
                     ExDate = exchangeRates.FirstOrDefault().ExchangeDate,
                     Source = source,
                     ExId = await GetNextId(),
-                    Code = ConvertCurrencyCodes(exchangeRates)
+                    Code = ConvertCurrencyCodes(exchangeRates.Where(ex => ex.BaseCode.Equals(baseCode, StringComparison.OrdinalIgnoreCase)))
                 };
 
                 await exchangeDataAccess.Insert(exchangeLog);
@@ -54,7 +56,7 @@ namespace ExchangeRate.Subscribers
             {
                 if (!string.IsNullOrWhiteSpace(rate.Code))
                 {
-                    codes.Add(rate.Code, rate.USD);
+                    codes.Add(rate.Code, rate.BaseRate);
                 }
             }
 
