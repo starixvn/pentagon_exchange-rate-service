@@ -1,4 +1,6 @@
-﻿namespace ExchangeRate.Subscribers.SC
+﻿using Sentry;
+
+namespace ExchangeRate.Subscribers.SC
 {
     public interface ISCSubscriberService : ISubscriberService
     {
@@ -8,8 +10,8 @@
     {
         private const string BaseCode = "USD";
 
-        public SCSubscriberService(ISCExchangeDataAccess exchangeDataAccess, ISCGameConfigDataAccess gameConfigDataAccess)
-            : base(BaseCode, exchangeDataAccess, gameConfigDataAccess)
+        public SCSubscriberService(ISCExchangeDataAccess exchangeDataAccess, ISCGameConfigDataAccess gameConfigDataAccess, ISentryClient sentryClient)
+            : base(BaseCode, exchangeDataAccess, gameConfigDataAccess, sentryClient)
         {
         }
     }

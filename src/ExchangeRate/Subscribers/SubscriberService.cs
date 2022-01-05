@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Sentry;
 
 namespace ExchangeRate.Subscribers
 {
@@ -14,13 +15,15 @@ namespace ExchangeRate.Subscribers
     {
         protected readonly string baseCode;
         protected readonly IExchangeDataAccess exchangeDataAccess;
-        protected readonly IGameConfigDataAccess gameConfigDataAccess;        
+        protected readonly IGameConfigDataAccess gameConfigDataAccess;
+        protected readonly ISentryClient sentryClient;
 
-        protected SubscriberService(string baseCode,IExchangeDataAccess exchangeDataAccess, IGameConfigDataAccess gameConfigDataAccess)
+        protected SubscriberService(string baseCode,IExchangeDataAccess exchangeDataAccess, IGameConfigDataAccess gameConfigDataAccess, ISentryClient sentryClient)
         {
             this.exchangeDataAccess = exchangeDataAccess;
             this.gameConfigDataAccess = gameConfigDataAccess;
             this.baseCode = baseCode;
+            this.sentryClient = sentryClient;
         }
 
         public async Task InsertExchangeRates(string source, IEnumerable<Providers.ExchangeRateRecord> exchangeRates)
@@ -36,8 +39,15 @@ namespace ExchangeRate.Subscribers
                     Code = ConvertCurrencyCodes(exchangeRates.Where(ex => ex.BaseCode.Equals(baseCode, StringComparison.OrdinalIgnoreCase)))
                 };
 
-                await exchangeDataAccess.Insert(exchangeLog);
-                await gameConfigDataAccess.UpdateReloadExchange();
+                if (exchangeLog.Code.Count > 0)
+                {
+                    await exchangeDataAccess.Insert(exchangeLog);
+                    await gameConfigDataAccess.UpdateReloadExchange();
+                }
+                else 
+                {
+                    sentryClient.CaptureMessage($"{DateTime.Now} - Exchange got empty codes", Sentry.Protocol.SentryLevel.Fatal);
+                }               
             }
         }
 
