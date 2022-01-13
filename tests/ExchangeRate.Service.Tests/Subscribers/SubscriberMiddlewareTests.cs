@@ -23,29 +23,5 @@ namespace ExchangeRate.Service.Tests.Subscribers
             // Assert
             Assert.Equal(settings, result);
         }
-
-        [Fact]
-        public void AddSubcriberServices_Always_AddSubcriberService()
-        {
-            // Arrange
-            var settings = new SubscriberSettings
-            {
-                SC = new SubcriberDatabase { ConnectionString = "mongodb://127.0.0.1:27017", DatabaseName = "db" },
-                VG = new SubcriberDatabase { ConnectionString = "mongodb://127.0.0.1:27017", DatabaseName = "db" }
-            };
-
-            var services = new ServiceCollection();
-            services.AddMongoDBServices(settings);
-
-            // Act
-            services.AddSubcriberServices(settings);
-            var provider = services.BuildServiceProvider();
-            var scService = provider.GetRequiredService<ISCSubscriberService>();
-            var vgService = provider.GetRequiredService<IVGSubscriberService>();
-
-            // Assert
-            Assert.NotNull(scService);
-            Assert.NotNull(vgService);
-        }
     }
 }

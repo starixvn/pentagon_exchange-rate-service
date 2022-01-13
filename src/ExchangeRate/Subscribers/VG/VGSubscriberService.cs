@@ -1,4 +1,6 @@
-﻿namespace ExchangeRate.Subscribers.VG
+﻿using Sentry;
+
+namespace ExchangeRate.Subscribers.VG
 {
     public interface IVGSubscriberService : ISubscriberService
     {
@@ -8,8 +10,8 @@
     {
         private const string BaseCode = "VND";
 
-        public VGSubcriberService(IVGExchangeDataAccess exchangeDataAccess, IVGGameConfigDataAccess gameConfigDataAccess)
-            : base(BaseCode, exchangeDataAccess, gameConfigDataAccess)
+        public VGSubcriberService(IVGExchangeDataAccess exchangeDataAccess, IVGGameConfigDataAccess gameConfigDataAccess, ISentryClient sentryClient)
+            : base(BaseCode, exchangeDataAccess, gameConfigDataAccess, sentryClient)
         {
         }
     }
