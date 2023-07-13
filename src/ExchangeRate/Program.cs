@@ -1,6 +1,5 @@
 using Coravel;
 using Coravel.Events.Interfaces;
-using ExchangeRate._Shared.Configurations;
 using ExchangeRate._Shared.Middlewares;
 using ExchangeRate.Events;
 using ExchangeRate.Providers;
@@ -8,6 +7,7 @@ using ExchangeRate.Subscribers;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Sentry;
+using System;
 using TinyHealthCheck;
 
 namespace ExchangeRate
@@ -19,7 +19,8 @@ namespace ExchangeRate
         public static void Main(string[] args)
         {
             IHost host = CreateHostBuilder(args).Build();
-            
+            SentrySdk.CaptureMessage($"{DateTime.Now} - Start ExchangeRate", Sentry.Protocol.SentryLevel.Info);
+
             host.Services.UseScheduler(scheduler =>
             {
                 scheduler.Schedule<ExchangeInvocable>().Cron(CronSettings);

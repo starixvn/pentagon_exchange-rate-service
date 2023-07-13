@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Sentry;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Sentry;
 
 namespace ExchangeRate.Subscribers
 {
@@ -18,7 +18,7 @@ namespace ExchangeRate.Subscribers
         protected readonly IGameConfigDataAccess gameConfigDataAccess;
         protected readonly ISentryClient sentryClient;
 
-        protected SubscriberService(string baseCode,IExchangeDataAccess exchangeDataAccess, IGameConfigDataAccess gameConfigDataAccess, ISentryClient sentryClient)
+        protected SubscriberService(string baseCode, IExchangeDataAccess exchangeDataAccess, IGameConfigDataAccess gameConfigDataAccess, ISentryClient sentryClient)
         {
             this.exchangeDataAccess = exchangeDataAccess;
             this.gameConfigDataAccess = gameConfigDataAccess;
@@ -33,7 +33,7 @@ namespace ExchangeRate.Subscribers
                 var exchangeLog = new ExchangeRateLog
                 {
                     Time = DateTimeOffset.UtcNow.DateTime,
-                    ExDate = exchangeRates.FirstOrDefault().ExchangeDate,
+                    ExDate = exchangeRates.First().ExchangeDate,
                     Source = source,
                     ExId = await GetNextId(),
                     Code = ConvertCurrencyCodes(exchangeRates.Where(ex => ex.BaseCode.Equals(baseCode, StringComparison.OrdinalIgnoreCase)))
@@ -44,14 +44,14 @@ namespace ExchangeRate.Subscribers
                     await exchangeDataAccess.Insert(exchangeLog);
                     await gameConfigDataAccess.UpdateReloadExchange();
                 }
-                else 
+                else
                 {
                     sentryClient.CaptureMessage($"{DateTime.Now} - Exchange got empty codes", Sentry.Protocol.SentryLevel.Fatal);
-                }               
+                }
             }
         }
 
-        private async Task<int> GetNextId() 
+        private async Task<int> GetNextId()
         {
             var latestExchange = await exchangeDataAccess.GetLastExchange();
 
