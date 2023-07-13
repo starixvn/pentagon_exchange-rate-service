@@ -9,7 +9,7 @@ RUN dotnet restore -v diag
 COPY /src/ExchangeRate .
 RUN dotnet publish -r linux-x64 --self-contained false -o /app 
 
-FROM hub.lumigame.com/base/dotnet/core/aspnet:5.0.15-buster-slim AS base
+FROM hub.lumigame.com/base/dotnet/core/aspnet:5.0-buster-slim AS base
 
 RUN sed -i 's/MinProtocol = TLSv1.2/MinProtocol = TLSv1/g' /etc/ssl/openssl.cnf
 RUN sed -i 's/MinProtocol = TLSv1.2/MinProtocol = TLSv1/g' /usr/lib/ssl/openssl.cnf
