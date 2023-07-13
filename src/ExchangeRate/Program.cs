@@ -18,8 +18,8 @@ namespace ExchangeRate
 
         public static void Main(string[] args)
         {
-            SentrySdk.CaptureMessage("Start ExchangeRate " + DateTime.UtcNow);
             IHost host = CreateHostBuilder(args).Build();
+            SentrySdk.CaptureMessage($"{DateTime.Now} - Start ExchangeRate", Sentry.Protocol.SentryLevel.Info);
 
             host.Services.UseScheduler(scheduler =>
             {
