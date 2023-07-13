@@ -63,6 +63,6 @@ namespace ExchangeRate
                 {
                     logging.AddConfiguration(hostingContext.Configuration);
                     logging.AddSentry(opt => opt.Environment = hostingContext.Configuration["ENV"]);
-                });
+                }).UseConsoleLifetime();
     }
 }
