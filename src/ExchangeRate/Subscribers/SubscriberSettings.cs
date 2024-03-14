@@ -5,6 +5,8 @@
         public SubcriberDatabase SC { get; set; }
 
         public SubcriberDatabase VG { get; set; }
+
+        public SubcriberDatabase SN { get; set; }
     }
 
     public class SubcriberDatabase

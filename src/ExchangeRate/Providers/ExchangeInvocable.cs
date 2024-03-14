@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Coravel.Events.Interfaces;
 using Coravel.Invocable;
 using ExchangeRate.Events;
@@ -19,7 +20,7 @@ namespace ExchangeRate.Providers
 
         public async Task Invoke()
         {
-            var exchangeRates = await exchangeProviderService.GetExchangeRate();
+            var exchangeRates = await exchangeProviderService.GetExchangeRate();           
 
             await dispatcher.Broadcast(new ExchangeRateReceived(Source, exchangeRates));
         }
