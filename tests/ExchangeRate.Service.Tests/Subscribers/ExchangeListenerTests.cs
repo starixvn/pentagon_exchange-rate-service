@@ -4,6 +4,7 @@ using ExchangeRate._Shared.Configurations;
 using ExchangeRate.Events;
 using ExchangeRate.Subscribers;
 using ExchangeRate.Subscribers.SC;
+using ExchangeRate.Subscribers.SN;
 using ExchangeRate.Subscribers.VG;
 using NSubstitute;
 using Xunit;
@@ -14,6 +15,7 @@ namespace ExchangeRate.Service.Tests.Subscribers
     {
         private readonly ISCSubscriberService SCService;
         private readonly IVGSubscriberService VGService;
+        private readonly ISNSubscriberService SNService;
         private readonly IAppSettings appSettings;
 
         private readonly ExchangeListener listener;
@@ -22,9 +24,10 @@ namespace ExchangeRate.Service.Tests.Subscribers
         {
             SCService = Substitute.For<ISCSubscriberService>();
             VGService = Substitute.For<IVGSubscriberService>();
+            SNService = Substitute.For<ISNSubscriberService>();
             appSettings = Substitute.For<IAppSettings>();
 
-            listener = new ExchangeListener(SCService, VGService, appSettings);
+            listener = new ExchangeListener(SCService, VGService, SNService, appSettings);
         }
 
         [Theory, AutoData]
@@ -40,6 +43,7 @@ namespace ExchangeRate.Service.Tests.Subscribers
             // Assert
             await SCService.Received().InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
             await VGService.Received().InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
+            await SNService.Received().InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
         }
     }
 }
