@@ -47,13 +47,12 @@ namespace ExchangeRate
                     {
                         config.Port = appSettings.Port;
                         config.UrlPath = "/";
-
+                        config.Hostname = "*";
                         return config;
                     });
 
                     services.AddSchedulers();
                     services.AddEventListeners();
-
                     services.AddMongoDBServices(appSettings.SubcriberSettings);
 
                     services.AddProviderServices(appSettings.ExchangeProviderSettings);
