@@ -1,4 +1,5 @@
 ﻿using ExchangeRate.Subscribers.SC;
+using ExchangeRate.Subscribers.SN;
 using ExchangeRate.Subscribers.VG;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson;
@@ -21,6 +22,10 @@ namespace ExchangeRate.Subscribers
             services.AddScoped<IVGExchangeDataAccess, VGExchangeDataAccess>();
             services.AddScoped<IVGGameConfigDataAccess, VGGameConfigDataAccess>();
             services.AddScoped<IVGSubscriberService, VGSubcriberService>();
+
+            services.AddScoped<ISNExchangeDataAccess, SNExchangeDataAccess>();
+            services.AddScoped<ISNGameConfigDataAccess, SNGameConfigDataAccess>();
+            services.AddScoped<ISNSubscriberService, SNSubscriberService>();
         }
 
         public static void AddMongoDBServices(this IServiceCollection services, SubscriberSettings settings)
@@ -36,6 +41,7 @@ namespace ExchangeRate.Subscribers
 
             services.AddSingleton<ISCMongoClient>(new SCMongoClient(settings.SC));
             services.AddSingleton<IVGMongoClient>(new VGMongoClient(settings.VG));
+            services.AddSingleton<ISNMongoClient>(new SNMongoClient(settings.SN));
         }
     }
 }

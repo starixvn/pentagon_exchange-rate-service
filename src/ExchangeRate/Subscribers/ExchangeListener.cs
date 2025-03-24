@@ -3,6 +3,7 @@ using Coravel.Events.Interfaces;
 using ExchangeRate._Shared.Configurations;
 using ExchangeRate.Events;
 using ExchangeRate.Subscribers.SC;
+using ExchangeRate.Subscribers.SN;
 using ExchangeRate.Subscribers.VG;
 
 namespace ExchangeRate.Subscribers
@@ -11,12 +12,14 @@ namespace ExchangeRate.Subscribers
     {
         private readonly ISCSubscriberService SCService;
         private readonly IVGSubscriberService VGService;
+        private readonly ISNSubscriberService SNService;
         private readonly IAppSettings appSettings;
 
-        public ExchangeListener(ISCSubscriberService scService, IVGSubscriberService vgService, IAppSettings appSettings)
+        public ExchangeListener(ISCSubscriberService scService, IVGSubscriberService vgService, ISNSubscriberService snService, IAppSettings appSettings)
         {
             SCService = scService;
             VGService = vgService;
+            SNService = snService;
             this.appSettings = appSettings;
         }
 
@@ -24,6 +27,7 @@ namespace ExchangeRate.Subscribers
         {
             await SCService.InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
             await VGService.InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
+            await SNService.InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
         }
     }
 }
