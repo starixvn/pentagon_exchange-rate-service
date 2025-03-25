@@ -8,7 +8,7 @@ namespace ExchangeRate.Subscribers.VG
 
     public class VGSubcriberService : SubscriberService, IVGSubscriberService
     {
-        private const string BaseCode = "VND";
+        private const string BaseCode = "USD";
 
         public VGSubcriberService(IVGExchangeDataAccess exchangeDataAccess, IVGGameConfigDataAccess gameConfigDataAccess, ISentryClient sentryClient)
             : base(BaseCode, exchangeDataAccess, gameConfigDataAccess, sentryClient)

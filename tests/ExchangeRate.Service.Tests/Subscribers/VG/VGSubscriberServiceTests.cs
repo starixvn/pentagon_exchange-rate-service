@@ -47,7 +47,7 @@ namespace ExchangeRate.Service.Tests.Subscribers.VG
             // Arrange
             var exchangeRates = new List<ExchangeRateRecord>
             {
-                new ExchangeRateRecord{ExchangeDate = DateTime.Now, BaseCode = "VND", BaseRate = 1.1245M, Code = "INH"}
+                new ExchangeRateRecord{ExchangeDate = DateTime.Now, BaseCode = "USD", BaseRate = 1.1245M, Code = "INH"}
             };
 
             // Act
