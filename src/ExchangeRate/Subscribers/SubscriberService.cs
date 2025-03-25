@@ -14,16 +14,18 @@ namespace ExchangeRate.Subscribers
     public class SubscriberService : ISubscriberService
     {
         protected readonly string baseCode;
+        protected readonly string system;
         protected readonly IExchangeDataAccess exchangeDataAccess;
         protected readonly IGameConfigDataAccess gameConfigDataAccess;
         protected readonly ISentryClient sentryClient;
 
-        protected SubscriberService(string baseCode, IExchangeDataAccess exchangeDataAccess, IGameConfigDataAccess gameConfigDataAccess, ISentryClient sentryClient)
+        protected SubscriberService(string baseCode, IExchangeDataAccess exchangeDataAccess, IGameConfigDataAccess gameConfigDataAccess, ISentryClient sentryClient, string system = "SG")
         {
             this.exchangeDataAccess = exchangeDataAccess;
             this.gameConfigDataAccess = gameConfigDataAccess;
             this.baseCode = baseCode;
             this.sentryClient = sentryClient;
+            this.system = system;
         }
 
         public async Task InsertExchangeRates(string source, IEnumerable<Providers.ExchangeRateRecord> exchangeRates)
@@ -53,9 +55,11 @@ namespace ExchangeRate.Subscribers
 
         private async Task<int> GetNextId()
         {
+            sentryClient.CaptureMessage($"{DateTime.Now} - {this.system} - Getting next exchange id");
+
             var latestExchange = await exchangeDataAccess.GetLastExchange();
 
-            sentryClient.CaptureMessage($"{DateTime.Now} - Last exchange id {latestExchange.ExId}");
+            sentryClient.CaptureMessage($"{DateTime.Now} - {this.system} - Last exchange id {latestExchange.ExId}");
 
             return latestExchange == null ? 1 : latestExchange.ExId + 1;
         }
