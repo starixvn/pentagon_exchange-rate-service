@@ -24,10 +24,14 @@ namespace ExchangeRate.Subscribers
 
         public async Task<ExchangeRateLog> GetLastExchange()
         {
+            var projection = Builders<ExchangeRateLog>.Projection
+                .Include(b => b.ExId);
+
             var options = new FindOptions<ExchangeRateLog, ExchangeRateLog>
             {
                 Limit = 1,
-                Sort = Builders<ExchangeRateLog>.Sort.Descending(x => x.ExId)
+                Sort = Builders<ExchangeRateLog>.Sort.Descending(x => x.ExId),
+                Projection = projection
             };
 
             return (await exchangeCollection.FindAsync(x => true, options)).FirstOrDefault();
