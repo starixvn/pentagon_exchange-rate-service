@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
+using MongoDB.Bson.Serialization.Options;
 using MongoDB.Bson.Serialization.Serializers;
 
 namespace ExchangeRate.Subscribers
@@ -37,7 +38,8 @@ namespace ExchangeRate.Subscribers
             };
 
             ConventionRegistry.Register(nameof(camelIgnoringExtraElementConventions), camelIgnoringExtraElementConventions, t => true);
-            BsonSerializer.RegisterSerializer(new DecimalSerializer(BsonType.Decimal128));
+
+            BsonSerializer.RegisterSerializer(new DecimalSerializer(BsonType.Decimal128, new RepresentationConverter(allowOverflow: false, allowTruncation: true)));
 
             services.AddSingleton<ISCMongoClient>(new SCMongoClient(settings.SC));
             services.AddSingleton<IVGMongoClient>(new VGMongoClient(settings.VG));
