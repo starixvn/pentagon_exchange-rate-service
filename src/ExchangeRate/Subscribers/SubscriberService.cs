@@ -1,8 +1,8 @@
-﻿using Sentry;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Sentry;
 
 namespace ExchangeRate.Subscribers
 {
@@ -54,6 +54,8 @@ namespace ExchangeRate.Subscribers
         private async Task<int> GetNextId()
         {
             var latestExchange = await exchangeDataAccess.GetLastExchange();
+
+            sentryClient.CaptureMessage($"{DateTime.Now} - Last exchange id {latestExchange.ExId}");
 
             return latestExchange == null ? 1 : latestExchange.ExId + 1;
         }
