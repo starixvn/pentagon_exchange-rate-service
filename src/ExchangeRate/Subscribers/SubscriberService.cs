@@ -55,11 +55,7 @@ namespace ExchangeRate.Subscribers
 
         private async Task<int> GetNextId()
         {
-            sentryClient.CaptureMessage($"{DateTime.Now} - {this.system} - Getting next exchange id");
-
             var latestExchange = await exchangeDataAccess.GetLastExchange();
-
-            sentryClient.CaptureMessage($"{DateTime.Now} - {this.system} - Last exchange id {latestExchange.ExId}");
 
             return latestExchange == null ? 1 : latestExchange.ExId + 1;
         }
