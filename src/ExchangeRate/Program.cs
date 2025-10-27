@@ -46,9 +46,6 @@ namespace ExchangeRate
                 {
                     webBuilder.ConfigureServices((hostContext, services) =>
                     {
-                        var appSettings = services.AddSettings(hostContext.Configuration);
-                        
-                        // Add health checks and routing
                         services.AddHealthChecks();
                         services.AddRouting();
                     });
