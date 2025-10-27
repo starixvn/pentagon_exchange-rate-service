@@ -4,11 +4,14 @@ using ExchangeRate._Shared.Middlewares;
 using ExchangeRate.Events;
 using ExchangeRate.Providers;
 using ExchangeRate.Subscribers;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Sentry;
 using System;
-using TinyHealthCheck;
 
 namespace ExchangeRate
 {
@@ -39,17 +42,37 @@ namespace ExchangeRate
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.ConfigureServices((hostContext, services) =>
+                    {
+                        var appSettings = services.AddSettings(hostContext.Configuration);
+                        
+                        // Add health checks and routing
+                        services.AddHealthChecks();
+                        services.AddRouting();
+                    });
+                    
+                    webBuilder.Configure(app =>
+                    {
+                        // Health check endpoint for K8s
+                        app.UseRouting();
+                        app.UseEndpoints(endpoints =>
+                        {
+                            endpoints.MapHealthChecks("/health");
+                        });
+                    });
+                    
+                    webBuilder.ConfigureKestrel((context, options) =>
+                    {
+                        var appSettings = context.Configuration.GetSection("AppSettings").Get<ExchangeRate._Shared.Configurations.AppSettings>();
+                        options.ListenAnyIP(appSettings.Port);
+                    });
+                })
                 .ConfigureServices((hostContext, services) =>
                 {
                     var appSettings = services.AddSettings(hostContext.Configuration);
                     CronSettings = appSettings.Cron;
-                    services.AddBasicTinyHealthCheck(config =>
-                    {
-                        config.Port = appSettings.Port;
-                        config.UrlPath = "/";
-
-                        return config;
-                    });
 
                     services.AddSchedulers();
                     services.AddEventListeners();
@@ -63,6 +86,6 @@ namespace ExchangeRate
                 {
                     logging.AddConfiguration(hostingContext.Configuration);
                     logging.AddSentry(opt => opt.Environment = hostingContext.Configuration["ENV"]);
-                }).UseConsoleLifetime();
+                });
     }
 }
