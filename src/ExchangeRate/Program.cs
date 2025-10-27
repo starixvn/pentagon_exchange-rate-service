@@ -5,13 +5,19 @@ using ExchangeRate.Events;
 using ExchangeRate.Providers;
 using ExchangeRate.Subscribers;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Sentry;
 using System;
+using System.Linq;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace ExchangeRate
 {
@@ -50,13 +56,41 @@ namespace ExchangeRate
                         services.AddRouting();
                     });
                     
-                    webBuilder.Configure(app =>
+                    webBuilder.Configure((context, app) =>
                     {
-                        // Health check endpoint for K8s
+                        // Health check endpoint for K8s with custom response
                         app.UseRouting();
                         app.UseEndpoints(endpoints =>
                         {
-                            endpoints.MapHealthChecks("/");
+                            endpoints.MapHealthChecks("/", new HealthCheckOptions
+                            {
+                                ResponseWriter = async (httpContext, healthReport) =>
+                                {
+                                    httpContext.Response.ContentType = "application/json";
+                                    
+                                    var response = new
+                                    {
+                                        status = healthReport.Status.ToString(),
+                                        serviceName = "ExchangeRateService",
+                                        environment = context.Configuration["ENV"] ?? "Unknown",
+                                        timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"),
+                                        version = typeof(Program).Assembly.GetName().Version?.ToString() ?? "1.0.0",
+                                        checks = healthReport.Entries.Select(e => new
+                                        {
+                                            name = e.Key,
+                                            status = e.Value.Status.ToString(),
+                                            description = e.Value.Description,
+                                            duration = e.Value.Duration.TotalMilliseconds
+                                        })
+                                    };
+                                    
+                                    await httpContext.Response.WriteAsync(
+                                        JsonSerializer.Serialize(response, new JsonSerializerOptions 
+                                        { 
+                                            WriteIndented = true 
+                                        }));
+                                }
+                            });
                         });
                     });
                     
