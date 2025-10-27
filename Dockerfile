@@ -1,4 +1,4 @@
-FROM hub.lumigame.com/base/dotnet/core/aspnet:9.0-alpine-25h2 AS builder
+FROM hub.lumigame.com/base/dotnet/core/sdk:9.0-alpine-25h2 AS builder
 
 WORKDIR /src
 COPY /src/ExchangeRate/ExchangeRate.Service.csproj ExchangeRate/ExchangeRate.Service.csproj
