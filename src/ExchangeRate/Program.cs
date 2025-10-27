@@ -56,7 +56,7 @@ namespace ExchangeRate
                         app.UseRouting();
                         app.UseEndpoints(endpoints =>
                         {
-                            endpoints.MapHealthChecks("/health");
+                            endpoints.MapHealthChecks("/");
                         });
                     });
                     
