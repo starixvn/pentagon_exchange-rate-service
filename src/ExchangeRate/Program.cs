@@ -58,7 +58,6 @@ namespace ExchangeRate
                     
                     webBuilder.Configure((context, app) =>
                     {
-                        // Health check endpoint for K8s with custom response
                         app.UseRouting();
                         app.UseEndpoints(endpoints =>
                         {

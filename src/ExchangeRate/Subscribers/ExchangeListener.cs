@@ -25,9 +25,20 @@ namespace ExchangeRate.Subscribers
 
         public async Task HandleAsync(ExchangeRateReceived broadcasted)
         {
-            await SCService.InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
-            await VGService.InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
-            await SNService.InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
+            if (appSettings.SubcriberSettings?.SC != null && appSettings.SubcriberSettings.SC.Enabled)
+            {
+                await SCService.InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
+            }
+
+            if (appSettings.SubcriberSettings?.VG != null && appSettings.SubcriberSettings.VG.Enabled)
+            {
+                await VGService.InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
+            }
+
+            if (appSettings.SubcriberSettings?.SN != null && appSettings.SubcriberSettings.SN.Enabled)
+            {
+                await SNService.InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
+            }
         }
     }
 }
