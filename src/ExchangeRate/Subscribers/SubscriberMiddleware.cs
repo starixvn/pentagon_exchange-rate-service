@@ -15,21 +15,33 @@ namespace ExchangeRate.Subscribers
         {
             services.AddSingleton(settings);
 
-            services.AddScoped<ISCExchangeDataAccess, SCExchangeDataAccess>();
-            services.AddScoped<ISCGameConfigDataAccess, SCGameConfigDataAccess>();
-            services.AddScoped<ISCSubscriberService, SCSubscriberService>();
+            if (settings?.SC != null && settings.SC.Enabled)
+            {
+                services.AddScoped<ISCExchangeDataAccess, SCExchangeDataAccess>();
+                services.AddScoped<ISCGameConfigDataAccess, SCGameConfigDataAccess>();
+                services.AddScoped<ISCSubscriberService, SCSubscriberService>();
+            }
 
-            services.AddScoped<IVGExchangeDataAccess, VGExchangeDataAccess>();
-            services.AddScoped<IVGGameConfigDataAccess, VGGameConfigDataAccess>();
-            services.AddScoped<IVGSubscriberService, VGSubcriberService>();
+            if (settings?.VG != null && settings.VG.Enabled)
+            {
+                services.AddScoped<IVGExchangeDataAccess, VGExchangeDataAccess>();
+                services.AddScoped<IVGGameConfigDataAccess, VGGameConfigDataAccess>();
+                services.AddScoped<IVGSubscriberService, VGSubcriberService>();
+            }
 
-            services.AddScoped<ISNExchangeDataAccess, SNExchangeDataAccess>();
-            services.AddScoped<ISNGameConfigDataAccess, SNGameConfigDataAccess>();
-            services.AddScoped<ISNSubscriberService, SNSubscriberService>();
+            if (settings?.SN != null && settings.SN.Enabled)
+            {
+                services.AddScoped<ISNExchangeDataAccess, SNExchangeDataAccess>();
+                services.AddScoped<ISNGameConfigDataAccess, SNGameConfigDataAccess>();
+                services.AddScoped<ISNSubscriberService, SNSubscriberService>();
+            }
         }
 
         public static void AddMongoDBServices(this IServiceCollection services, SubscriberSettings settings)
         {
+            if (settings == null)
+                return;
+
             var camelIgnoringExtraElementConventions = new ConventionPack
             {
                 new CamelCaseElementNameConvention(),
@@ -39,9 +51,20 @@ namespace ExchangeRate.Subscribers
             ConventionRegistry.Register(nameof(camelIgnoringExtraElementConventions), camelIgnoringExtraElementConventions, t => true);
             BsonSerializer.RegisterSerializer(new DecimalSerializer(BsonType.Decimal128));
 
-            services.AddSingleton<ISCMongoClient>(new SCMongoClient(settings.SC));
-            services.AddSingleton<IVGMongoClient>(new VGMongoClient(settings.VG));
-            services.AddSingleton<ISNMongoClient>(new SNMongoClient(settings.SN));
+            if (settings.SC != null && settings.SC.Enabled)
+            {
+                services.AddSingleton<ISCMongoClient>(new SCMongoClient(settings.SC));
+            }
+
+            if (settings.VG != null && settings.VG.Enabled)
+            {
+                services.AddSingleton<IVGMongoClient>(new VGMongoClient(settings.VG));
+            }
+
+            if (settings.SN != null && settings.SN.Enabled)
+            {
+                services.AddSingleton<ISNMongoClient>(new SNMongoClient(settings.SN));
+            }
         }
     }
 }

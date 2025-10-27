@@ -280,7 +280,7 @@ namespace ExchangeRate.Service.Tests.Subscribers
 
         private ExchangeListener CreateSut(IAppSettings appSettings)
         {
-            return new ExchangeListener(scService, vgService, snService, appSettings);
+            return new ExchangeListener(appSettings, scService, vgService, snService);
         }
 
         private static IAppSettings CreateAppSettings(bool scEnabled, bool vgEnabled, bool snEnabled)

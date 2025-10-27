@@ -15,27 +15,27 @@ namespace ExchangeRate.Subscribers
         private readonly ISNSubscriberService SNService;
         private readonly IAppSettings appSettings;
 
-        public ExchangeListener(ISCSubscriberService scService, IVGSubscriberService vgService, ISNSubscriberService snService, IAppSettings appSettings)
+        public ExchangeListener(IAppSettings appSettings, ISCSubscriberService scService = null, IVGSubscriberService vgService = null, ISNSubscriberService snService = null)
         {
+            this.appSettings = appSettings;
             SCService = scService;
             VGService = vgService;
             SNService = snService;
-            this.appSettings = appSettings;
         }
 
         public async Task HandleAsync(ExchangeRateReceived broadcasted)
         {
-            if (appSettings.SubcriberSettings?.SC != null && appSettings.SubcriberSettings.SC.Enabled)
+            if (SCService != null && appSettings.SubcriberSettings?.SC != null && appSettings.SubcriberSettings.SC.Enabled)
             {
                 await SCService.InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
             }
 
-            if (appSettings.SubcriberSettings?.VG != null && appSettings.SubcriberSettings.VG.Enabled)
+            if (VGService != null && appSettings.SubcriberSettings?.VG != null && appSettings.SubcriberSettings.VG.Enabled)
             {
                 await VGService.InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
             }
 
-            if (appSettings.SubcriberSettings?.SN != null && appSettings.SubcriberSettings.SN.Enabled)
+            if (SNService != null && appSettings.SubcriberSettings?.SN != null && appSettings.SubcriberSettings.SN.Enabled)
             {
                 await SNService.InsertExchangeRates(broadcasted.Source, broadcasted.ExchangeRate);
             }
