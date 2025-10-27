@@ -97,8 +97,12 @@ namespace ExchangeRate
                     webBuilder.ConfigureKestrel((context, options) =>
                     {
                         var appSettings = context.Configuration.GetSection("AppSettings").Get<ExchangeRate._Shared.Configurations.AppSettings>();
+                        
                         options.ListenAnyIP(appSettings.Port);
                     });
+                    
+                    // Suppress default URL configuration to avoid conflicts
+                    webBuilder.UseUrls();
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
