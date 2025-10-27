@@ -12,8 +12,10 @@ RUN dotnet publish -r linux-x64 --self-contained false -o /app
 FROM hub.lumigame.com/base/dotnet/core/aspnet:9.0-alpine-25h2 AS base
 
 WORKDIR /app
-RUN adduser app_user --disabled-password
-USER app_user
+RUN adduser -D app_user && \
+    chown -R app_user:app_user /app
 COPY --from=builder /app .
+RUN chown -R app_user:app_user /app
+USER app_user
 
 ENTRYPOINT ["dotnet", "ExchangeRate.Service.dll"]
