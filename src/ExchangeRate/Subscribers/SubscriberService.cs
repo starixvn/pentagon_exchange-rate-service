@@ -46,7 +46,7 @@ namespace ExchangeRate.Subscribers
                 }
                 else
                 {
-                    sentryClient.CaptureMessage($"{DateTime.Now} - Exchange got empty codes", Sentry.Protocol.SentryLevel.Fatal);
+                    sentryClient.CaptureMessage($"{DateTime.Now} - Exchange got empty codes", SentryLevel.Fatal);
                 }
             }
         }
