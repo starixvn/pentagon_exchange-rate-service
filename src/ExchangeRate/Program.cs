@@ -32,7 +32,7 @@ namespace ExchangeRate
         public static void Main(string[] args)
         {
             IHost host = CreateHostBuilder(args).Build();
-            SentrySdk.CaptureMessage($"{DateTime.Now} - Start ExchangeRate", SentryLevel.Info);
+            SentrySdk.CaptureMessage($"{DateTime.Now} - Start ExchangeRate");
 
             host.Services.UseScheduler(scheduler =>
             {
@@ -54,7 +54,7 @@ namespace ExchangeRate
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.ConfigureServices((hostContext, services) =>
+                    webBuilder.ConfigureServices((_, services) =>
                     {
                         services.AddHealthChecks();
                         services.AddRouting();
