@@ -24,6 +24,10 @@ namespace ExchangeRate
     public static class Program
     {
         private static string CronSettings = "";
+        private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions 
+        { 
+            WriteIndented = true 
+        };
 
         public static void Main(string[] args)
         {
@@ -84,10 +88,7 @@ namespace ExchangeRate
                                     };
                                     
                                     await httpContext.Response.WriteAsync(
-                                        JsonSerializer.Serialize(response, new JsonSerializerOptions 
-                                        { 
-                                            WriteIndented = true 
-                                        }));
+                                        JsonSerializer.Serialize(response, JsonOptions));
                                 }
                             });
                         });
